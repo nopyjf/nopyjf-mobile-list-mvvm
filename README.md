@@ -1,1 +1,0 @@
-nopyjf-mobile-list-mvvm
