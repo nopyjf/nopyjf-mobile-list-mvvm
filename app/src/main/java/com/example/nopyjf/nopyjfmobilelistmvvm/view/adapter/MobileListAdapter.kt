@@ -23,7 +23,7 @@ class MobileListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), clickItem)
     }
 
     class ViewHolder(
