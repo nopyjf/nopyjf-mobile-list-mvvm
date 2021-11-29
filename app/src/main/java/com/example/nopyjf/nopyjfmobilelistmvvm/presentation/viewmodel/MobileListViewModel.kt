@@ -23,27 +23,30 @@ class MobileListViewModel(
     private val _mobileList: MutableLiveData<List<MobileDisplay?>> by lazy {
         MutableLiveData<List<MobileDisplay?>>().also { getMobileList() }
     }
+    private val _state: MutableLiveData<MobileListScreenState> by lazy {
+        MutableLiveData<MobileListScreenState>()
+    }
+    private val _errorMessage: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
     val mobileList: LiveData<List<MobileDisplay?>> = _mobileList
-
-    var errorMessage: String? = null
-    lateinit var state: MobileListScreenState
+    val state: LiveData<MobileListScreenState> = _state
+    val errorMessage: LiveData<String?> = _errorMessage
 
     private fun getMobileList() {
         viewModelScope.launch {
             getMobileUseCase().collect { result ->
                 when (result) {
                     is ServiceResult.Loading -> {
-                        state = MobileListScreenState.Loading
+                        _state.postValue(MobileListScreenState.Loading)
                     }
                     is ServiceResult.Success -> {
-                        state = MobileListScreenState.MainListSuccess
+                        _state.postValue(MobileListScreenState.MainListSuccess)
                         _mobileList.postValue(result.data?.map { it.toMobileDisplay() })
-                        errorMessage = null
+                        _errorMessage.postValue(null)
                     }
                     is ServiceResult.Error -> {
-                        state = MobileListScreenState.MainListError
-                        errorMessage = result.errorMessage
+                        _state.postValue(MobileListScreenState.MainListError)
+                        _errorMessage.postValue(result.errorMessage)
                         _mobileList.postValue(null)
                     }
                 }

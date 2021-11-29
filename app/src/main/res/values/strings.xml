@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NopyJF Mobile List (MVVM)</string>
+    <string name="app_mobile_list_tab_title">MOBILE LIST</string>
+    <string name="app_favorite_list_tab_title">FAVORITE LIST</string>
 </resources>

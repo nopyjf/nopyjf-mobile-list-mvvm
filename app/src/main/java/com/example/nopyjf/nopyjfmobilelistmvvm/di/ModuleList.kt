@@ -6,10 +6,14 @@ import com.example.nopyjf.nopyjfmobilelistmvvm.data.service.getMobileServiceModu
 import com.example.nopyjf.nopyjfmobilelistmvvm.domain.usecase.getMobileUseCaseModule
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.getMobileListViewModel
 
-val moduleList = listOf(
+val getMobileModule = arrayOf(
     getMobileListViewModel,
     getMobileUseCaseModule,
     getMobileRepositoryModule,
     getMobileApiModule,
     getMobileServiceModule
+)
+
+val moduleList = listOf(
+    *getMobileModule
 )
