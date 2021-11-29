@@ -1,6 +1,7 @@
 package com.example.nopyjf.nopyjfmobilelistmvvm.data.api
 
 import com.example.nopyjf.nopyjfmobilelistmvvm.data.model.MobileEntity
+import com.example.nopyjf.nopyjfmobilelistmvvm.data.model.MobileImageEntity
 import com.example.nopyjf.nopyjfmobilelistmvvm.data.service.MobileService
 import org.koin.dsl.module
 
@@ -11,5 +12,9 @@ class MobileApi(
 ) {
     suspend fun getMobileList(): List<MobileEntity> {
         return service.getMobileList()
+    }
+
+    suspend fun getMobileImageList(): List<MobileImageEntity> {
+        return service.getMobileImageList()
     }
 }
