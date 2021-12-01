@@ -7,6 +7,17 @@
     <fragment
         android:id="@+id/mobileListViewPagerFragment"
         android:name="com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment.MobileListViewPagerFragment"
-        android:label="MobileListViewPagerFragment" />
+        android:label="MobileListViewPagerFragment">
+        <argument
+            android:name="ID_KEY"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_mobileListViewPagerFragment_to_mobileDetailActivity"
+            app:destination="@id/mobileDetailActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/mobileDetailActivity"
+        android:name="com.example.nopyjf.nopyjfmobilelistmvvm.view.activity.MobileDetailActivity"
+        android:label="MobileDetailActivity" />
 
 </navigation>

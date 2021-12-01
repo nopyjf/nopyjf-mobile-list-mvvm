@@ -14,7 +14,7 @@ class MobileRepository(
         return api.getMobileList().map { it.toMobile() }
     }
 
-    override suspend fun getMobileImageList(): List<MobileImage> {
-        return api.getMobileImageList().map { it.toMobileImage() }
+    override suspend fun getMobileImageList(id: Int): List<MobileImage> {
+        return api.getMobileImageList(id).map { it.toMobileImage() }
     }
 }

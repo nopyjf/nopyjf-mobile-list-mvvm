@@ -14,7 +14,7 @@ class MobileApi(
         return service.getMobileList()
     }
 
-    suspend fun getMobileImageList(): List<MobileImageEntity> {
-        return service.getMobileImageList()
+    suspend fun getMobileImageList(id: Int): List<MobileImageEntity> {
+        return service.getMobileImageList(id)
     }
 }

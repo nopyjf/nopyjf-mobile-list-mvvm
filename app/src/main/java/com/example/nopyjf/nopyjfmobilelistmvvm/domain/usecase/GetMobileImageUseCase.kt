@@ -13,10 +13,10 @@ val getMobileImageUseCaseModule = module { single { GetMobileImageUseCase(get())
 class GetMobileImageUseCase(
     private val repository: MobileRepository
 ) {
-    operator fun invoke(): Flow<ServiceResult<List<MobileImage>>> = flow {
+    operator fun invoke(id: Int): Flow<ServiceResult<List<MobileImage>>> = flow {
         try {
             emit(ServiceResult.Loading<List<MobileImage>>())
-            val data = repository.getMobileImageList()
+            val data = repository.getMobileImageList(id)
             emit(ServiceResult.Success<List<MobileImage>>(data = data))
         } catch (e: Exception) {
             emit(ServiceResult.Error<List<MobileImage>>(errorMessage = e.localizedMessage))

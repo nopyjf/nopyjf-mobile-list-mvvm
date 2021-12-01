@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MobileEntity(
-    val id: String?,
+    val id: Int?,
     val price: Double?,
     val rating: Double?,
     val thumbImageURL: String?,

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.nopyjf.nopyjfmobilelistmvvm.R
 import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.FragmentMobileListViewPagerBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.adapter.MobileListViewPagerAdapter
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MobileListViewPagerFragment : Fragment() {

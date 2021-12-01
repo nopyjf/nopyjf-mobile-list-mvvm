@@ -5,5 +5,5 @@ import com.example.nopyjf.nopyjfmobilelistmvvm.domain.model.MobileImage
 
 interface MobileRepositoryContractor {
     suspend fun getMobileList(): List<Mobile>
-    suspend fun getMobileImageList(): List<MobileImage>
+    suspend fun getMobileImageList(id: Int): List<MobileImage>
 }

@@ -5,10 +5,12 @@ import com.example.nopyjf.nopyjfmobilelistmvvm.data.repository.getMobileReposito
 import com.example.nopyjf.nopyjfmobilelistmvvm.data.service.getMobileServiceModule
 import com.example.nopyjf.nopyjfmobilelistmvvm.domain.usecase.getMobileImageUseCaseModule
 import com.example.nopyjf.nopyjfmobilelistmvvm.domain.usecase.getMobileUseCaseModule
+import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.getMobileDetailViewModel
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.getMobileListViewModel
 
 val getMobileModule = arrayOf(
     getMobileListViewModel,
+    getMobileDetailViewModel,
     getMobileUseCaseModule,
     getMobileImageUseCaseModule,
     getMobileRepositoryModule,

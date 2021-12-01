@@ -9,7 +9,9 @@ import com.example.nopyjf.nopyjfmobilelistmvvm.domain.model.toMobileDisplay
 import com.example.nopyjf.nopyjfmobilelistmvvm.domain.usecase.GetMobileUseCase
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.model.MobileDisplay
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.state.MobileListScreenState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -34,23 +36,25 @@ class MobileListViewModel(
 
     private fun getMobileList() {
         viewModelScope.launch {
-            getMobileUseCase().collect { result ->
-                when (result) {
-                    is ServiceResult.Loading -> {
-                        _state.postValue(MobileListScreenState.Loading)
-                    }
-                    is ServiceResult.Success -> {
-                        _state.postValue(MobileListScreenState.MainListSuccess)
-                        _mobileList.postValue(result.data?.map { it.toMobileDisplay() })
-                        _errorMessage.postValue(null)
-                    }
-                    is ServiceResult.Error -> {
-                        _state.postValue(MobileListScreenState.MainListError)
-                        _errorMessage.postValue(result.errorMessage)
-                        _mobileList.postValue(null)
+            getMobileUseCase()
+                .flowOn(Dispatchers.IO)
+                .collect { result ->
+                    when (result) {
+                        is ServiceResult.Loading -> {
+                            _state.postValue(MobileListScreenState.Loading)
+                        }
+                        is ServiceResult.Success -> {
+                            _state.postValue(MobileListScreenState.MainListSuccess)
+                            _mobileList.postValue(result.data?.map { it.toMobileDisplay() })
+                            _errorMessage.postValue(null)
+                        }
+                        is ServiceResult.Error -> {
+                            _state.postValue(MobileListScreenState.MainListError)
+                            _errorMessage.postValue(result.errorMessage)
+                            _mobileList.postValue(null)
+                        }
                     }
                 }
-            }
         }
     }
 }
