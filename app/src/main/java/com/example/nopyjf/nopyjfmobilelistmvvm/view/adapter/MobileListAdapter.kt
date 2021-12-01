@@ -11,7 +11,7 @@ import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.ItemMobileListBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.model.MobileDisplay
 
 class MobileListAdapter(
-    private val clickItem: (id: Int) -> Unit
+    private val clickItem: (id: Int, data: MobileDisplay) -> Unit
 ) : ListAdapter<MobileDisplay, MobileListAdapter.ViewHolder>(DiffUtils()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,9 +30,9 @@ class MobileListAdapter(
         private val binding: ItemMobileListBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: MobileDisplay, clickItem: (id: Int) -> Unit) {
+        fun bind(model: MobileDisplay, clickItem: (id: Int, data: MobileDisplay) -> Unit) {
             binding.model = model
-            itemView.setOnClickListener { clickItem(model.id ?: 0) }
+            itemView.setOnClickListener { clickItem(model.id ?: 0, model) }
         }
     }
 
