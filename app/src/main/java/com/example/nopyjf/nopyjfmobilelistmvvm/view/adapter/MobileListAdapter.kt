@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.nopyjf.nopyjfmobilelistmvvm.R
 import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.ItemMobileListBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.model.MobileDisplay
@@ -31,8 +32,11 @@ class MobileListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: MobileDisplay, clickItem: (id: Int, data: MobileDisplay) -> Unit) {
-            binding.model = model
-            itemView.setOnClickListener { clickItem(model.id ?: 0, model) }
+            binding.apply {
+                this.model = model
+                this.imageView.load(model.thumbImageURL)
+                itemView.setOnClickListener { clickItem(model.id ?: 0, model) }
+            }
         }
     }
 

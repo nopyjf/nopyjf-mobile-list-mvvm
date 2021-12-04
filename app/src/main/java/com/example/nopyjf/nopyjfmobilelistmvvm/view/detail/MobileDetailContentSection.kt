@@ -16,7 +16,6 @@ fun MobileDetailContentSection(state: MobileDetailScreenState, data: MobileDispl
         }
         state is MobileDetailScreenState.Success -> {
             data?.let { MobileDetailViewPager(it, state.data) }
-
         }
         state is MobileDetailScreenState.Error -> {
             Text(text = state.errMsg)
