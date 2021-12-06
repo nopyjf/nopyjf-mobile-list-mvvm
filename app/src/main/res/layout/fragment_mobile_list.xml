@@ -21,12 +21,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/mobileListLoading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="LOADING"
             android:visibility="@{state == MobileListScreenState.Loading ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent" />
 

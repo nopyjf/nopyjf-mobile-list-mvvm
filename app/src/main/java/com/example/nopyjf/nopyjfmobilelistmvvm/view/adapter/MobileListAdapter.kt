@@ -12,7 +12,9 @@ import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.ItemMobileListBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.model.MobileDisplay
 
 class MobileListAdapter(
-    private val clickItem: (id: Int, data: MobileDisplay) -> Unit
+    private val clickItem: (id: Int, data: MobileDisplay) -> Unit,
+    private val favoriteItem: (data: MobileDisplay) -> Unit,
+    private val unFavoriteItem: (data: MobileDisplay) -> Unit,
 ) : ListAdapter<MobileDisplay, MobileListAdapter.ViewHolder>(DiffUtils()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,17 +26,24 @@ class MobileListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), clickItem)
+        holder.bind(getItem(position), clickItem, favoriteItem, unFavoriteItem)
     }
 
     class ViewHolder(
         private val binding: ItemMobileListBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: MobileDisplay, clickItem: (id: Int, data: MobileDisplay) -> Unit) {
+        fun bind(
+            model: MobileDisplay,
+            clickItem: (id: Int, data: MobileDisplay) -> Unit,
+            favoriteItem: (data: MobileDisplay) -> Unit,
+            unFavoriteItem: (data: MobileDisplay) -> Unit,
+        ) {
             binding.apply {
                 this.model = model
-                this.imageView.load(model.thumbImageURL)
+                this.mobileItemImage.load(model.thumbImageURL)
+                this.mobileItemFavButton.setOnClickListener { unFavoriteItem(model) }
+                this.mobileItemUnFavButton.setOnClickListener { favoriteItem(model) }
                 itemView.setOnClickListener { clickItem(model.id ?: 0, model) }
             }
         }
@@ -46,7 +55,7 @@ class MobileListAdapter(
         }
 
         override fun areContentsTheSame(oldItem: MobileDisplay, newItem: MobileDisplay): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
     }
 }

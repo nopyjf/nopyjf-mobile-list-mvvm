@@ -1,23 +1,47 @@
 package com.example.nopyjf.nopyjfmobilelistmvvm.di
 
 import com.example.nopyjf.nopyjfmobilelistmvvm.data.api.getMobileApiModule
+import com.example.nopyjf.nopyjfmobilelistmvvm.data.database.getMobileDatabaseModule
 import com.example.nopyjf.nopyjfmobilelistmvvm.data.repository.getMobileRepositoryModule
 import com.example.nopyjf.nopyjfmobilelistmvvm.data.service.getMobileServiceModule
-import com.example.nopyjf.nopyjfmobilelistmvvm.domain.usecase.getMobileImageUseCaseModule
-import com.example.nopyjf.nopyjfmobilelistmvvm.domain.usecase.getMobileUseCaseModule
+import com.example.nopyjf.nopyjfmobilelistmvvm.domain.usecase.*
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.getMobileDetailViewModel
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.getMobileListViewModel
 
-val getMobileModule = arrayOf(
+val getViewModelModule = arrayOf(
     getMobileListViewModel,
-    getMobileDetailViewModel,
+    getMobileDetailViewModel
+)
+
+val getUseCaseModule = arrayOf(
     getMobileUseCaseModule,
     getMobileImageUseCaseModule,
-    getMobileRepositoryModule,
-    getMobileApiModule,
+    getFavoriteUseCaseModule,
+    getInsertFavoriteUseCaseModule,
+    getDeleteFavoriteUseCase
+)
+
+val getRepositoryModule = arrayOf(
+    getMobileRepositoryModule
+)
+
+val getApiModule = arrayOf(
+    getMobileApiModule
+)
+
+val getServiceModule = arrayOf(
     getMobileServiceModule
 )
 
+val getDatabaseModule = arrayOf(
+    getMobileDatabaseModule
+)
+
 val moduleList = listOf(
-    *getMobileModule
+    *getViewModelModule,
+    *getUseCaseModule,
+    *getRepositoryModule,
+    *getApiModule,
+    *getServiceModule,
+    *getDatabaseModule
 )

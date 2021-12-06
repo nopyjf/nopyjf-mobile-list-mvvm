@@ -50,7 +50,7 @@ class MobileListFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        _adapter = MobileListAdapter(::onClickItem)
+        _adapter = MobileListAdapter(::onClickItem, ::onFavoriteItem, ::onUnFavoriteItem)
         _binding.mobileListRecyclerView.adapter = _adapter
     }
 
@@ -72,6 +72,14 @@ class MobileListFragment : Fragment() {
                 it
             )
         }
+    }
+
+    private fun onFavoriteItem(data: MobileDisplay) {
+        _viewModel.insertFavorite(data)
+    }
+
+    private fun onUnFavoriteItem(data: MobileDisplay) {
+        _viewModel.deleteFavorite(data)
     }
 
     companion object {
