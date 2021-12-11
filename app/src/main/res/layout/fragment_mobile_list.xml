@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <import type="com.example.nopyjf.nopyjfmobilelistmvvm.view.state.MobileListScreenState" />
-
         <import type="android.view.View" />
 
-        <variable
-            name="state"
-            type="com.example.nopyjf.nopyjfmobilelistmvvm.view.state.MobileListScreenState" />
+        <import type="com.example.nopyjf.nopyjfmobilelistmvvm.view.state.MobileListScreenState" />
+
+        <import type="com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.MobileListViewModel" />
 
         <variable
-            name="errorMessage"
-            type="String" />
+            name="viewModel"
+            type="MobileListViewModel" />
+
+        <variable
+            name="model"
+            type="MobileListScreenState" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
+        <ProgressBar
             android:id="@+id/mobileListLoading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:visibility="@{state == MobileListScreenState.Loading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mobileListRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="@{state == MobileListScreenState.MainListSuccess ? View.VISIBLE : View.GONE}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mobileListLoading" />
+            android:indeterminateTint="@color/purple_500"
+            android:visibility="@{model.isLoading() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/mobileListError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@{errorMessage}"
-            android:visibility="@{state == MobileListScreenState.MainListError ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@{model.errMsg}"
+            android:visibility="@{model.isMobileListError() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/mobileListLoading"
+            tools:text="Error"
+            tools:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mobileListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="@{model.isMobileListSuccess() ? View.VISIBLE : View.GONE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mobileListLoading" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

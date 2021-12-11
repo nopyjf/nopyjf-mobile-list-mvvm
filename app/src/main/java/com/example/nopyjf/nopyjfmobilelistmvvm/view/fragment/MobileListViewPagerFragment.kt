@@ -10,6 +10,7 @@ import com.example.nopyjf.nopyjfmobilelistmvvm.R
 import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.FragmentMobileListViewPagerBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.adapter.MobileListViewPagerAdapter
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MobileListViewPagerFragment : Fragment() {
@@ -51,9 +52,32 @@ class MobileListViewPagerFragment : Fragment() {
 
     private fun setTabLayout() {
         _binding.apply {
+            mobileListTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    when (tab?.position) {
+                        0 -> _adapter.getMobileListListener()?.reload()
+                        1 -> _adapter.getFavoriteListener()?.reload()
+                    }
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    // do nothing
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    when (tab?.position) {
+                        0 -> _adapter.getMobileListListener()?.reload()
+                        1 -> _adapter.getFavoriteListener()?.reload()
+                    }
+                }
+            })
             TabLayoutMediator(mobileListTabLayout, mobileListViewPager) { tab, position ->
                 tab.text = getString(_tabTitles[position])
             }.attach()
         }
+    }
+
+    interface Listener {
+        fun reload()
     }
 }

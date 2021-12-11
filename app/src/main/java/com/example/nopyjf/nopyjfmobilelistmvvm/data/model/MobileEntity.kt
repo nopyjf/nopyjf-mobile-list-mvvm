@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MobileEntity(
-    @SerializedName(value = "id") val id: Int?,
+    @SerializedName("id") val id: Int?,
     @SerializedName("price") val price: Double?,
     @SerializedName("rating") val rating: Double?,
     @SerializedName("thumbImageURL") val thumbImageURL: String?,
@@ -24,6 +24,6 @@ fun MobileEntity.toMobile(): Mobile {
         thumbImageURL = this.thumbImageURL,
         description = this.description,
         brand = this.brand,
-        name = this.name
+        name = this.name,
     )
 }

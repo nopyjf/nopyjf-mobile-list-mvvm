@@ -14,7 +14,7 @@ data class MobileDisplay(
     val description: String?,
     val brand: String?,
     val name: String?,
-    var favorite: Boolean?
+    val favorite: Favorite?
 ) : Parcelable
 
 fun Mobile.toMobileDisplay(): MobileDisplay {
@@ -26,7 +26,7 @@ fun Mobile.toMobileDisplay(): MobileDisplay {
         description = this.description,
         brand = this.brand,
         name = this.name,
-        favorite = null
+        favorite = this.favorite
     )
 }
 

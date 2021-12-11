@@ -17,7 +17,7 @@ val getMobileDatabaseModule = module {
     }
 }
 
-@Database(entities = [FavoriteEntity::class], version = 1)
+@Database(entities = [FavoriteEntity::class], version = 1, exportSchema = false)
 abstract class MobileDatabase : RoomDatabase() {
     abstract fun favoriteDao(): FavoriteDao
 }

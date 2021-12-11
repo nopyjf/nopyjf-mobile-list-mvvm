@@ -15,7 +15,7 @@ import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.MobileList
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.adapter.MobileListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MobileListFragment : Fragment() {
+class MobileListFragment : Fragment(), MobileListViewPagerFragment.Listener {
 
     private lateinit var _binding: FragmentMobileListBinding
     private lateinit var _adapter: MobileListAdapter
@@ -49,6 +49,10 @@ class MobileListFragment : Fragment() {
         observeLiveData()
     }
 
+    override fun reload() {
+        _viewModel.getMobileList()
+    }
+
     private fun setRecyclerView() {
         _adapter = MobileListAdapter(::onClickItem, ::onFavoriteItem, ::onUnFavoriteItem)
         _binding.mobileListRecyclerView.adapter = _adapter
@@ -56,9 +60,10 @@ class MobileListFragment : Fragment() {
 
     private fun observeLiveData() {
         _viewModel.apply {
-            state.observe(viewLifecycleOwner) { _binding.state = it }
-            mobileList.observe(viewLifecycleOwner) { _adapter.submitList(it) }
-            errorMessage.observe(viewLifecycleOwner) { _binding.errorMessage = it }
+            state.observe(viewLifecycleOwner) {
+                _binding.model = it
+                _adapter.submitList(it.data)
+            }
         }
     }
 
@@ -75,11 +80,17 @@ class MobileListFragment : Fragment() {
     }
 
     private fun onFavoriteItem(data: MobileDisplay) {
-        _viewModel.insertFavorite(data)
+        _viewModel.apply {
+            insertFavorite(data)
+            getMobileList()
+        }
     }
 
     private fun onUnFavoriteItem(data: MobileDisplay) {
-        _viewModel.deleteFavorite(data)
+        _viewModel.apply {
+            deleteFavorite(data)
+            getMobileList()
+        }
     }
 
     companion object {

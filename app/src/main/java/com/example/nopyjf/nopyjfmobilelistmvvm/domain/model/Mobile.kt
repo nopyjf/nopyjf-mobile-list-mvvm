@@ -14,5 +14,6 @@ data class Mobile(
     val thumbImageURL: String?,
     val description: String?,
     val brand: String?,
-    val name: String?
+    val name: String?,
+    var favorite: Favorite? = null
 ) : Parcelable

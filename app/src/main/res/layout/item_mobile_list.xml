@@ -67,7 +67,7 @@
                 android:layout_height="24dp"
                 android:background="#FF0000"
                 android:contentDescription="@null"
-                android:visibility="@{model.favorite ? View.VISIBLE : View.GONE}"
+                android:visibility="@{model.favorite != null ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/mobileItemTitle" />
 
@@ -77,7 +77,7 @@
                 android:layout_height="24dp"
                 android:background="#000000"
                 android:contentDescription="@null"
-                android:visibility="@{model.favorite ? View.GONE : View.VISIBLE}"
+                android:visibility="@{model.favorite != null  ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/mobileItemTitle" />
 
