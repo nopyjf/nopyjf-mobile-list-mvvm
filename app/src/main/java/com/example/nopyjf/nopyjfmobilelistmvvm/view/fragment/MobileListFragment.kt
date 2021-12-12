@@ -20,14 +20,7 @@ class MobileListFragment : Fragment(), MobileListViewPagerFragment.Listener {
     private lateinit var _binding: FragmentMobileListBinding
     private lateinit var _adapter: MobileListAdapter
 
-    private var _page: Int = PAGE_INDEX
-
     private val _viewModel: MobileListViewModel by viewModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _page = arguments?.getInt(PAGE_EXTRA) ?: PAGE_INDEX
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,9 +60,8 @@ class MobileListFragment : Fragment(), MobileListViewPagerFragment.Listener {
         }
     }
 
-    private fun onClickItem(id: Int, data: MobileDisplay) {
+    private fun onClickItem(data: MobileDisplay) {
         bundleOf(
-            ID_EXTRA to id,
             DATA_EXTRA to data
         ).let {
             findNavController().navigate(
@@ -94,17 +86,8 @@ class MobileListFragment : Fragment(), MobileListViewPagerFragment.Listener {
     }
 
     companion object {
-        private const val PAGE_INDEX = 0
-        private const val PAGE_EXTRA = "PAGE_EXTRA"
-        private const val ID_EXTRA = "ID_EXTRA"
         private const val DATA_EXTRA = "DATA_EXTRA"
 
-        fun createFragment(page: Int): MobileListFragment {
-            return MobileListFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(PAGE_EXTRA, page)
-                }
-            }
-        }
+        fun createFragment() = MobileListFragment()
     }
 }

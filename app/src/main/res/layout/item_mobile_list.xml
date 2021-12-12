@@ -16,72 +16,109 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="188dp">
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="4dp"
+            app:cardCornerRadius="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/mobileItemImage"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:contentDescription="@null"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/mobileItemTitle"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@{model.name}"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/mobileItemFavButton"
-                app:layout_constraintStart_toEndOf="@id/mobileItemImage"
-                app:layout_constraintTop_toTopOf="@id/mobileItemImage"
-                tools:text="Moto E4 Plus" />
+                android:padding="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="188dp">
 
-            <TextView
-                android:id="@+id/mobileItemDesc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@{model.description}"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/mobileItemImage"
-                app:layout_constraintTop_toBottomOf="@+id/mobileItemTitle"
-                tools:text="First place in our list goes to the excellent Moto E4 Plus. It's a cheap phone that features phenomenal battery life, a fingerprint scanner and a premium feel design, plus it's a lot cheaper than the Moto G5 below. It is a little limited with its power, but it makes up for it by being able to last for a whole two days from a single charge. If price and battery are the most important features for you, the Moto E4 Plus will suit you perfectly" />
+                <ImageView
+                    android:id="@+id/mobileItemImage"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:contentDescription="@null"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/mobileItemFavButton"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="#FF0000"
-                android:contentDescription="@null"
-                android:visibility="@{model.favorite != null ? View.VISIBLE : View.GONE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/mobileItemTitle" />
+                <TextView
+                    android:id="@+id/mobileItemTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{model.name}"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toStartOf="@+id/mobileItemFavButton"
+                    app:layout_constraintStart_toEndOf="@id/mobileItemImage"
+                    app:layout_constraintTop_toTopOf="@id/mobileItemImage"
+                    tools:text="Moto E4 Plus" />
 
-            <ImageButton
-                android:id="@+id/mobileItemUnFavButton"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="#000000"
-                android:contentDescription="@null"
-                android:visibility="@{model.favorite != null  ? View.GONE : View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/mobileItemTitle" />
+                <TextView
+                    android:id="@+id/mobileItemDesc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{model.description}"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/mobileItemTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/mobileItemTitle"
+                    tools:text="First place in our list goes to the excellent Moto E4 Plus. It's a cheap phone that features phenomenal battery life, a fingerprint scanner and a premium feel design, plus it's a lot cheaper than the Moto G5 below. It is a little limited with its power, but it makes up for it by being able to last for a whole two days from a single charge. If price and battery are the most important features for you, the Moto E4 Plus will suit you perfectly" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/mobileItemRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{@string/app_favorite_list_rating(model.rating.toString())}"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@+id/mobileItemDesc"
+                    app:layout_constraintTop_toBottomOf="@+id/mobileItemDesc"
+                    tools:text="Price: $179.99" />
+
+                <TextView
+                    android:id="@+id/mobileItemPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{@string/app_favorite_list_price(model.price.toString())}"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@+id/mobileItemDesc"
+                    app:layout_constraintTop_toBottomOf="@+id/mobileItemDesc"
+                    tools:text="Price: $179.99" />
+
+                <ImageButton
+                    android:id="@+id/mobileItemFavButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/ic_favorite"
+                    android:contentDescription="@null"
+                    android:visibility="@{model.favorite != null ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/mobileItemTitle" />
+
+                <ImageButton
+                    android:id="@+id/mobileItemUnFavButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/ic_unfavorite"
+                    android:contentDescription="@null"
+                    android:visibility="@{model.favorite == null ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/mobileItemTitle" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

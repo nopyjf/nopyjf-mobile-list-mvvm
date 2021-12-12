@@ -8,43 +8,37 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.nopyjf.nopyjfmobilelistmvvm.R
-import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.ItemMobileListBinding
+import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.ItemFavoriteListBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.model.MobileDisplay
 
-class MobileListAdapter(
-    private val clickItem: (data: MobileDisplay) -> Unit,
-    private val favoriteItem: (data: MobileDisplay) -> Unit,
-    private val unFavoriteItem: (data: MobileDisplay) -> Unit,
-) : ListAdapter<MobileDisplay, MobileListAdapter.ViewHolder>(DiffUtils()) {
+class FavoriteListAdapter(
+    private val deleteItem: (data: MobileDisplay) -> Unit
+) : ListAdapter<MobileDisplay, FavoriteListAdapter.ViewHolder>(DiffUtils()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context), R.layout.item_mobile_list, parent, false
+                LayoutInflater.from(parent.context), R.layout.item_favorite_list, parent, false
             )
         )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), clickItem, favoriteItem, unFavoriteItem)
+        holder.bind(getItem(position), deleteItem)
     }
 
     class ViewHolder(
-        private val binding: ItemMobileListBinding
+        private val binding: ItemFavoriteListBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
             model: MobileDisplay,
-            clickItem: (data: MobileDisplay) -> Unit,
-            favoriteItem: (data: MobileDisplay) -> Unit,
-            unFavoriteItem: (data: MobileDisplay) -> Unit,
+            deleteItem: (data: MobileDisplay) -> Unit
         ) {
             binding.apply {
                 this.model = model
-                this.mobileItemImage.load(model.thumbImageURL)
-                this.mobileItemFavButton.setOnClickListener { unFavoriteItem(model) }
-                this.mobileItemUnFavButton.setOnClickListener { favoriteItem(model) }
-                itemView.setOnClickListener { clickItem(model) }
+                this.favoriteItemImage.load(model.thumbImageURL)
+                itemView.setOnClickListener { deleteItem(model) }
             }
         }
     }

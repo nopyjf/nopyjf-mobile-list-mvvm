@@ -3,6 +3,7 @@ package com.example.nopyjf.nopyjfmobilelistmvvm.view.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment.FavoriteListFragment
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment.MobileListFragment
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment.MobileListViewPagerFragment
 
@@ -18,8 +19,8 @@ class MobileListViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> MobileListFragment.createFragment(position).apply { mobileListListener = this }
-            1 -> MobileListFragment.createFragment(position).apply { favoriteListener = this }
+            0 -> MobileListFragment.createFragment().apply { mobileListListener = this }
+            1 -> FavoriteListFragment.createFragment().apply { favoriteListener = this }
             else -> Fragment()
         }
     }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.example.nopyjf.nopyjfmobilelistmvvm.view.state.MobileListScreenState" />
+
+        <import type="com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.MobileListViewModel" />
+
+        <variable
+            name="viewModel"
+            type="MobileListViewModel" />
+
+        <variable
+            name="model"
+            type="MobileListScreenState" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/favoriteListLoading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:indeterminateTint="@color/purple_500"
+            android:visibility="@{model.isLoading() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/favoriteListError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{model.errMsg}"
+            android:visibility="@{model.isMobileListError() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/favoriteListLoading"
+            tools:text="Error"
+            tools:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favoriteListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="@{model.isMobileListSuccess() ? View.VISIBLE : View.GONE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/favoriteListLoading" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

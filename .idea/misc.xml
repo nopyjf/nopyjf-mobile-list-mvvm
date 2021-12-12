@@ -3,11 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/drawable/ic_favorite.xml" value="0.3828125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/layout/activity_main.xml" value="0.25769927536231885" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/layout/fragment_favorite_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/layout/fragment_mobile_detail.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/layout/fragment_mobile_list.xml" value="0.22" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/layout/fragment_mobile_list_view_pager.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/layout/item_mobile_list.xml" value="0.3706777316735823" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/layout/fragment_mobile_list_view_pager.xml" value="0.25" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/layout/item_favorite_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/nopyjf-mobile-list-mvvm/app/src/main/res/layout/item_mobile_list.xml" value="0.339568345323741" />
       </map>
     </option>
   </component>
