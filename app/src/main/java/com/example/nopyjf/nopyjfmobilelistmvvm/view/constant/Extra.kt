@@ -1,0 +1,6 @@
+package com.example.nopyjf.nopyjfmobilelistmvvm.view.constant
+
+const val MOBILE_DISPLAY_EXTRA = "MOBILE_DISPLAY_EXTRA"
+
+const val MOBILE_LIST_FILTER_RESULT_EXTRA = "MOBILE_LIST_FILTER_RESULT_EXTRA"
+const val MOBILE_LIST_FILTER_CHOICE_EXTRA = "MOBILE_LIST_FILTER_CHOICE_EXTRA"

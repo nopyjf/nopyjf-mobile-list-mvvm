@@ -19,8 +19,8 @@ class MobileListViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> MobileListFragment.createFragment().apply { mobileListListener = this }
-            1 -> FavoriteListFragment.createFragment().apply { favoriteListener = this }
+            0 -> MobileListFragment.createFragment().also { mobileListListener = it }
+            1 -> FavoriteListFragment.createFragment().also { favoriteListener = it }
             else -> Fragment()
         }
     }

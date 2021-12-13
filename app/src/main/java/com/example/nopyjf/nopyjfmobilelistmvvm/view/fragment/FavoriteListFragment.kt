@@ -50,11 +50,7 @@ class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_filter -> {
-                MobileListFilterDialogFragment.createDialog(_viewModel.filterChoice.value ?: -1)
-                    .show(
-                        childFragmentManager,
-                        MobileListFilterDialogFragment.MOBILE_LIST_FILTER_DIALOG_FM_TAG
-                    )
+
                 true
             }
             else -> {

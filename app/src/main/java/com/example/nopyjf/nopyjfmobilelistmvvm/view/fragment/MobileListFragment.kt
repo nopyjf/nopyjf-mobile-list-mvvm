@@ -1,21 +1,19 @@
 package com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.nopyjf.nopyjfmobilelistmvvm.R
 import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.FragmentMobileListBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.model.MobileDisplay
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.MobileListViewModel
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.adapter.MobileListAdapter
-import com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment.MobileListFilterDialogFragment.Companion.MOBILE_LIST_FILTER_EXTRA
-import com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment.MobileListFilterDialogFragment.Companion.MOBILE_LIST_FILTER_RESULT_EXTRA
+import com.example.nopyjf.nopyjfmobilelistmvvm.view.constant.MOBILE_DISPLAY_EXTRA
+import com.example.nopyjf.nopyjfmobilelistmvvm.view.constant.MOBILE_LIST_FILTER_CHOICE_EXTRA
+import com.example.nopyjf.nopyjfmobilelistmvvm.view.constant.MOBILE_LIST_FILTER_RESULT_EXTRA
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MobileListFragment : Fragment(),
@@ -25,12 +23,10 @@ class MobileListFragment : Fragment(),
     private lateinit var _adapter: MobileListAdapter
 
     private val _viewModel: MobileListViewModel by viewModel()
-    private var _choice: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        listenFragmentResult()
     }
 
     override fun onCreateView(
@@ -51,6 +47,7 @@ class MobileListFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         observeLiveData()
+        listenFragmentResult()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -60,11 +57,14 @@ class MobileListFragment : Fragment(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_filter -> {
-                MobileListFilterDialogFragment.createDialog(_viewModel.filterChoice.value ?: -1)
-                    .show(
-                        childFragmentManager,
-                        MobileListFilterDialogFragment.MOBILE_LIST_FILTER_DIALOG_FM_TAG
+                bundleOf(
+                    MOBILE_LIST_FILTER_CHOICE_EXTRA to _viewModel.filterChoice.value
+                ).let {
+                    findNavController().navigate(
+                        R.id.action_mobileListViewPagerFragment_to_mobileListFilterDialogFragment,
+                        it
                     )
+                }
                 true
             }
             else -> {
@@ -89,13 +89,15 @@ class MobileListFragment : Fragment(),
                 _binding.model = it
                 _adapter.submitList(it.data)
             }
-            filterChoice.observe(viewLifecycleOwner) {}
+            filterChoice.observe(viewLifecycleOwner) {
+                getMobileList()
+            }
         }
     }
 
     private fun onClickItem(data: MobileDisplay) {
         bundleOf(
-            DATA_EXTRA to data
+            MOBILE_DISPLAY_EXTRA to data
         ).let {
             findNavController().navigate(
                 R.id.action_mobileListViewPagerFragment_to_mobileDetailActivity,
@@ -119,14 +121,16 @@ class MobileListFragment : Fragment(),
     }
 
     private fun listenFragmentResult() {
-        setFragmentResultListener(MOBILE_LIST_FILTER_RESULT_EXTRA) { _, bundle ->
-            _choice = bundle.getInt(MOBILE_LIST_FILTER_EXTRA)
-        }
+        findNavController()
+            .currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<Int>(MOBILE_LIST_FILTER_RESULT_EXTRA)
+            ?.observe(viewLifecycleOwner, { choice ->
+                _viewModel.setChoice(choice)
+            })
     }
 
     companion object {
-        private const val DATA_EXTRA = "DATA_EXTRA"
-
         fun createFragment() = MobileListFragment()
     }
 }

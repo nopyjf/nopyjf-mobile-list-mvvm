@@ -14,10 +14,17 @@
         <action
             android:id="@+id/action_mobileListViewPagerFragment_to_mobileDetailActivity"
             app:destination="@id/mobileDetailActivity" />
+        <action
+            android:id="@+id/action_mobileListViewPagerFragment_to_mobileListFilterDialogFragment"
+            app:destination="@id/mobileListFilterDialogFragment" />
     </fragment>
     <activity
         android:id="@+id/mobileDetailActivity"
         android:name="com.example.nopyjf.nopyjfmobilelistmvvm.view.detail.MobileDetailActivity"
         android:label="MobileDetailActivity" />
+    <dialog
+        android:id="@+id/mobileListFilterDialogFragment"
+        android:name="com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment.MobileListFilterDialogFragment"
+        android:label="MobileListFilterDialogFragment" />
 
 </navigation>
