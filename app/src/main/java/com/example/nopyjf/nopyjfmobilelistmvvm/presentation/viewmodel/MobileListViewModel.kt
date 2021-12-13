@@ -32,8 +32,12 @@ class MobileListViewModel(
     private val _state: MutableLiveData<MobileListScreenState> by lazy {
         MutableLiveData<MobileListScreenState>()
     }
+    private val _filterChoice: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>().also { it.postValue(-1) }
+    }
 
     val state: LiveData<MobileListScreenState> = _state
+    val filterChoice: LiveData<Int> = _filterChoice
 
     init {
         getMobileList()
@@ -53,7 +57,7 @@ class MobileListViewModel(
 
     fun getMobileList() {
         viewModelScope.launch(Dispatchers.IO) {
-            getMobileUseCase()
+            getMobileUseCase(_filterChoice.value ?: -1)
                 .collect { result ->
                     when (result) {
                         is ServiceResult.Loading -> {
@@ -76,5 +80,9 @@ class MobileListViewModel(
                     }
                 }
         }
+    }
+
+    fun setChoice(choice: Int) {
+        _filterChoice.postValue(choice)
     }
 }

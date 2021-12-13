@@ -1,9 +1,7 @@
 package com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.nopyjf.nopyjfmobilelistmvvm.R
@@ -19,6 +17,11 @@ class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
     private lateinit var _adapter: FavoriteListAdapter
 
     private val _viewModel: FavoriteListViewModel by viewModel()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +43,27 @@ class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
         observeLiveData()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_mobile_list_filter, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_filter -> {
+                MobileListFilterDialogFragment.createDialog(_viewModel.filterChoice.value ?: -1)
+                    .show(
+                        childFragmentManager,
+                        MobileListFilterDialogFragment.MOBILE_LIST_FILTER_DIALOG_FM_TAG
+                    )
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+                false
+            }
+        }
+    }
+
     override fun reload() {
         _viewModel.getFavoriteList()
     }
@@ -54,6 +78,9 @@ class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
             state.observe(viewLifecycleOwner) {
                 _binding.model = it
                 _adapter.submitList(it.data)
+            }
+            filterChoice.observe(viewLifecycleOwner) {
+                // do nothing
             }
         }
     }

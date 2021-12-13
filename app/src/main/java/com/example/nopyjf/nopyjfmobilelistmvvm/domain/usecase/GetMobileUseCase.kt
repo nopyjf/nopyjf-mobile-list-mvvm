@@ -15,13 +15,19 @@ val getMobileUseCaseModule = module { single { GetMobileUseCase(get()) } }
 class GetMobileUseCase(
     private val repository: MobileRepository
 ) {
-    operator fun invoke(): Flow<ServiceResult<List<Mobile>>> = flow {
+    operator fun invoke(filterChoice: Int): Flow<ServiceResult<List<Mobile>>> = flow {
         try {
             emit(ServiceResult.Loading<List<Mobile>>())
             val mobiles = repository.getMobileList()
             val favorites = repository.getFavorites()
+
             addFavorite(mobiles = mobiles, favorites = favorites)
-            emit(ServiceResult.Success<List<Mobile>>(data = mobiles))
+            val orderedMobiles = orderedMobiles(
+                filterChoice = filterChoice,
+                mobiles = mobiles
+            )
+
+            emit(ServiceResult.Success<List<Mobile>>(data = orderedMobiles))
         } catch (e: Exception) {
             emit(ServiceResult.Error<List<Mobile>>(errorMessage = e.localizedMessage))
         }
@@ -29,5 +35,14 @@ class GetMobileUseCase(
 
     private fun addFavorite(mobiles: List<Mobile>, favorites: List<Favorite>) {
         mobiles.forEach { mob -> mob.favorite = favorites.find { it.id == mob.id } }
+    }
+
+    private fun orderedMobiles(filterChoice: Int, mobiles: List<Mobile>): List<Mobile> {
+        return when (filterChoice) {
+            0 -> mobiles.sortedBy { it.price }
+            1 -> mobiles.sortedByDescending { it.price }
+            2 -> mobiles.sortedByDescending { it.rating }
+            else -> mobiles
+        }
     }
 }

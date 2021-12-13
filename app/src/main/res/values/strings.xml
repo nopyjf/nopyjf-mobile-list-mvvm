@@ -8,4 +8,6 @@
 
     <string name="app_mobile_detail_rating">Rating: %s</string>
     <string name="app_mobile_detail_price">Price: $%s</string>
+
+    <string name="app_mobile_filter_title">Filter</string>
 </resources>

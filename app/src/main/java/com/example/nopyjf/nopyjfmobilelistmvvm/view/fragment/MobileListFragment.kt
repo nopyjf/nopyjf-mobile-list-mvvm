@@ -1,26 +1,37 @@
 package com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.nopyjf.nopyjfmobilelistmvvm.R
 import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.FragmentMobileListBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.model.MobileDisplay
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.MobileListViewModel
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.adapter.MobileListAdapter
+import com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment.MobileListFilterDialogFragment.Companion.MOBILE_LIST_FILTER_EXTRA
+import com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment.MobileListFilterDialogFragment.Companion.MOBILE_LIST_FILTER_RESULT_EXTRA
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MobileListFragment : Fragment(), MobileListViewPagerFragment.Listener {
+class MobileListFragment : Fragment(),
+    MobileListViewPagerFragment.Listener {
 
     private lateinit var _binding: FragmentMobileListBinding
     private lateinit var _adapter: MobileListAdapter
 
     private val _viewModel: MobileListViewModel by viewModel()
+    private var _choice: Int = -1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        listenFragmentResult()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +53,27 @@ class MobileListFragment : Fragment(), MobileListViewPagerFragment.Listener {
         observeLiveData()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_mobile_list_filter, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_filter -> {
+                MobileListFilterDialogFragment.createDialog(_viewModel.filterChoice.value ?: -1)
+                    .show(
+                        childFragmentManager,
+                        MobileListFilterDialogFragment.MOBILE_LIST_FILTER_DIALOG_FM_TAG
+                    )
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+                false
+            }
+        }
+    }
+
     override fun reload() {
         _viewModel.getMobileList()
     }
@@ -57,6 +89,7 @@ class MobileListFragment : Fragment(), MobileListViewPagerFragment.Listener {
                 _binding.model = it
                 _adapter.submitList(it.data)
             }
+            filterChoice.observe(viewLifecycleOwner) {}
         }
     }
 
@@ -82,6 +115,12 @@ class MobileListFragment : Fragment(), MobileListViewPagerFragment.Listener {
         _viewModel.apply {
             deleteFavorite(data)
             getMobileList()
+        }
+    }
+
+    private fun listenFragmentResult() {
+        setFragmentResultListener(MOBILE_LIST_FILTER_RESULT_EXTRA) { _, bundle ->
+            _choice = bundle.getInt(MOBILE_LIST_FILTER_EXTRA)
         }
     }
 

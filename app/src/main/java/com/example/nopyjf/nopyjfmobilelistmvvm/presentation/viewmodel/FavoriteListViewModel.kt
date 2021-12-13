@@ -31,8 +31,12 @@ class FavoriteListViewModel(
     private val _state: MutableLiveData<MobileListScreenState> by lazy {
         MutableLiveData<MobileListScreenState>()
     }
+    private val _filterChoice: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>().also { it.postValue(-1) }
+    }
 
     val state: LiveData<MobileListScreenState> = _state
+    val filterChoice: LiveData<Int> = _filterChoice
 
     init {
         getFavoriteList()
@@ -46,7 +50,7 @@ class FavoriteListViewModel(
 
     fun getFavoriteList() {
         viewModelScope.launch(Dispatchers.IO) {
-            getFavoriteUseCase()
+            getFavoriteUseCase(_filterChoice.value ?: -1)
                 .collect { result ->
                     when (result) {
                         is ServiceResult.Loading -> {
@@ -58,7 +62,11 @@ class FavoriteListViewModel(
                             result.data
                                 ?.map { it.toMobileDisplay() }
                                 ?.let {
-                                    _state.postValue(MobileListScreenState.MobileListSuccess(data = it))
+                                    _state.postValue(
+                                        MobileListScreenState.MobileListSuccess(
+                                            data = it
+                                        )
+                                    )
                                 }
                         }
                         is ServiceResult.Error -> {

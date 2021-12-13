@@ -14,14 +14,21 @@ val getFavoriteUseCaseModule = module { single { GetFavoriteUseCase(get()) } }
 class GetFavoriteUseCase(
     private val repository: MobileRepository
 ) {
-    operator fun invoke(): Flow<ServiceResult<List<Mobile>>> = flow {
+    operator fun invoke(filterChoice: Int): Flow<ServiceResult<List<Mobile>>> = flow {
         try {
             emit(ServiceResult.Loading<List<Mobile>>())
+
             val mobiles = repository.getMobileList()
             val favorites = repository.getFavorites()
+
             addFavorite(mobiles = mobiles, favorites = favorites)
             val filteredMobiles = filterUnFavorite(mobiles = mobiles)
-            emit(ServiceResult.Success<List<Mobile>>(data = filteredMobiles))
+            val orderedMobiles = orderFavorite(
+                filterChoice = filterChoice,
+                mobiles = filteredMobiles
+            )
+
+            emit(ServiceResult.Success<List<Mobile>>(data = orderedMobiles))
         } catch (e: Exception) {
             emit(ServiceResult.Error<List<Mobile>>(errorMessage = e.localizedMessage))
         }
@@ -33,5 +40,14 @@ class GetFavoriteUseCase(
 
     private fun filterUnFavorite(mobiles: List<Mobile>): List<Mobile> {
         return mobiles.filter { mob -> mob.favorite != null }
+    }
+
+    private fun orderFavorite(filterChoice: Int, mobiles: List<Mobile>): List<Mobile> {
+        return when (filterChoice) {
+            0 -> mobiles.sortedBy { it.price }
+            1 -> mobiles.sortedByDescending { it.price }
+            2 -> mobiles.sortedByDescending { it.rating }
+            else -> mobiles
+        }
     }
 }
