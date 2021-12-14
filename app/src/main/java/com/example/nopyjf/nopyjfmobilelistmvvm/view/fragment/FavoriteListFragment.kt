@@ -2,13 +2,17 @@ package com.example.nopyjf.nopyjfmobilelistmvvm.view.fragment
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.nopyjf.nopyjfmobilelistmvvm.R
 import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.FragmentFavoriteListBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.model.MobileDisplay
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.FavoriteListViewModel
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.adapter.FavoriteListAdapter
+import com.example.nopyjf.nopyjfmobilelistmvvm.view.constant.MOBILE_LIST_FILTER_CHOICE_EXTRA
+import com.example.nopyjf.nopyjfmobilelistmvvm.view.constant.MOBILE_LIST_FILTER_RESULT_EXTRA
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
@@ -41,6 +45,7 @@ class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
         observeLiveData()
+        listenFragmentResult()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -50,7 +55,14 @@ class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_filter -> {
-
+                bundleOf(
+                    MOBILE_LIST_FILTER_CHOICE_EXTRA to _viewModel.filterChoice.value
+                ).let {
+                    findNavController().navigate(
+                        R.id.action_mobileListViewPagerFragment_to_mobileListFilterDialogFragment,
+                        it
+                    )
+                }
                 true
             }
             else -> {
@@ -76,7 +88,7 @@ class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
                 _adapter.submitList(it.data)
             }
             filterChoice.observe(viewLifecycleOwner) {
-                // do nothing
+                getFavoriteList()
             }
         }
     }
@@ -86,6 +98,16 @@ class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
             deleteFavorite(data)
             getFavoriteList()
         }
+    }
+
+    private fun listenFragmentResult() {
+        findNavController()
+            .currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<Int>(MOBILE_LIST_FILTER_RESULT_EXTRA)
+            ?.observe(viewLifecycleOwner, { choice ->
+                _viewModel.setChoice(choice)
+            })
     }
 
     companion object {

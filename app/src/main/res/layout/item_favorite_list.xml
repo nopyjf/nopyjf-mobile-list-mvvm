@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{@string/app_favorite_list_rating(model.price.toString())}"
+                    android:text="@{@string/app_favorite_list_rating(model.rating.toString())}"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/favoriteItemTitle"

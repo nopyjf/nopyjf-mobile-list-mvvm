@@ -78,4 +78,8 @@ class FavoriteListViewModel(
                 }
         }
     }
+
+    fun setChoice(choice: Int) {
+        _filterChoice.postValue(choice)
+    }
 }
