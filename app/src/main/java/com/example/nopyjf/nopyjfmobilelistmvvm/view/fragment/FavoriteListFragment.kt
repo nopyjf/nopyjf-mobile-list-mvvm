@@ -6,6 +6,7 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.nopyjf.nopyjfmobilelistmvvm.R
 import com.example.nopyjf.nopyjfmobilelistmvvm.databinding.FragmentFavoriteListBinding
 import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.model.MobileDisplay
@@ -13,9 +14,12 @@ import com.example.nopyjf.nopyjfmobilelistmvvm.presentation.viewmodel.FavoriteLi
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.adapter.FavoriteListAdapter
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.constant.MOBILE_LIST_FILTER_CHOICE_EXTRA
 import com.example.nopyjf.nopyjfmobilelistmvvm.view.constant.MOBILE_LIST_FILTER_RESULT_EXTRA
+import com.example.nopyjf.nopyjfmobilelistmvvm.view.helper.CustomItemTouchHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
+class FavoriteListFragment : Fragment(),
+    MobileListViewPagerFragment.Listener,
+    CustomItemTouchHelper.Listener {
 
     private lateinit var _binding: FragmentFavoriteListBinding
     private lateinit var _adapter: FavoriteListAdapter
@@ -76,9 +80,28 @@ class FavoriteListFragment : Fragment(), MobileListViewPagerFragment.Listener {
         _viewModel.getFavoriteList()
     }
 
+    override fun swipeLeft(position: Int) {
+        _viewModel.state.value?.let {
+            _viewModel.apply {
+                deleteFavorite(it.data[position])
+                getFavoriteList()
+            }
+        }
+    }
+
     private fun setRecyclerView() {
         _adapter = FavoriteListAdapter(::deleteItem)
-        _binding.favoriteListRecyclerView.adapter = _adapter
+        _binding.favoriteListRecyclerView.apply {
+            CustomItemTouchHelper(
+                ItemTouchHelper.LEFT,
+                ItemTouchHelper.LEFT,
+                this@FavoriteListFragment
+            ).let { helper ->
+                ItemTouchHelper(helper).attachToRecyclerView(this)
+            }
+
+            adapter = _adapter
+        }
     }
 
     private fun observeLiveData() {
